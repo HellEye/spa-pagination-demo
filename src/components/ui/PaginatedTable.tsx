@@ -4,6 +4,8 @@ import { Table, TableBody, TableHead, TableHeader, TableRow } from "./table";
 import { Base } from "@/types/Base";
 import { Skeleton } from "./skeleton";
 import Pagination from "./Pagination";
+import { Link } from "@tanstack/react-router";
+import { buttonVariants } from "./button";
 
 type Props<T extends Base> = {
   pagination: PaginationQueryResult<T>;
@@ -32,18 +34,35 @@ const PaginatedTable = <T extends Base>({
         <Skeleton className="w-full" />
       </div>
     );
-  if (error) {
+  if (error && error.response?.status !== 404) {
     return (
       <div className="flex flex-row gap-2 w-full">
         <p className="w-full text-xl">Error loading data</p>
         <p className="w-full text-xl">{error.message}</p>
+        <Link
+          className={buttonVariants({ variant: "outline", className: "w-40" })}
+          to="."
+        >
+          Clear filters
+        </Link>
       </div>
     );
   }
   if (!data || !data.data || data.data.length === 0 || data.total === 0)
     return (
-      <div className="flex flex-row gap-2 w-full">
-        <p className="w-full text-xl">No results</p>
+      <div className="flex flex-col gap-8 w-full mt-4">
+        <p className="w-full text-3xl">No results</p>
+        <Link
+          className={buttonVariants({ variant: "outline", className: "w-40" })}
+          to="."
+        >
+          Clear filters
+        </Link>
+        <Pagination
+          page={pagination.params.page}
+          totalPages={data?.total_pages}
+          className="mt-4"
+        />
       </div>
     );
 

@@ -35,9 +35,10 @@ const AppIndex = () => {
           onChange={(e) => {
             const id = parseInt(e.target.value);
             navigate({
-              search: {
+              search: (prev) => ({
+                ...prev,
                 id: isNaN(id) ? undefined : id,
-              },
+              }),
             });
           }}
           value={params.id ?? ""}
@@ -74,7 +75,7 @@ const AppIndex = () => {
 
 const paramsSchema = z.object({
   id: z.number().min(1).optional(),
-  page: z.number().min(1).optional(),
+  page: z.number().min(1).optional().catch(1),
 });
 
 // This can be done through file-based rendering option in react-router, with exporting just the path options object
@@ -88,7 +89,6 @@ const indexRoute = createRoute({
   // This takes a function, which can be manually written, but also takes in a specific object that many validation libraries provide
   validateSearch: paramsSchema,
   // This takes in a component that will be rendered if the validation fails
-
   notFoundComponent: () => <div>Not found</div>,
 });
 
