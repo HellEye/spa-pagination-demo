@@ -18,7 +18,6 @@ import { PaginationQueryResult } from "@/query/paginatedQuery";
 import { Product } from "@/types/Product";
 import { TestAPI } from "vitest";
 import Providers from "@/Providers";
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const TestComponent = ({
   pagination,
 }: {
